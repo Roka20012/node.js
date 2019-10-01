@@ -11,7 +11,7 @@ module.exports = {
         return User.findById(userId);
     },
     deleteUser(userId) {
-        return User.findByIdAndRemove(userId);
+        return User.deleteOne(userId);
     },
     addUser(user) {
         const newUser = new User(user);

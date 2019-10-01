@@ -6,16 +6,16 @@ const User = require("../../database/dao/User");
 
 router.post("/login", async (req, res) => {
     try {
-        const { username, password } = reg.body;
+        const { username, password } = req.body;
         const user = await User.getUserByUsename(username);
-
         if (user) {
             const isRight = await bcrypt.compare(password, user.password);
             if (isRight) {
                 const token = jwt.sign(
                     JSON.stringify({
                         _id: user._id,
-                        username
+                        username,
+                        user
                     }),
                     config.get("JWT.secret")
                 );
@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.post("/join", async (req, res) => {
+router.post("/register", async (req, res) => {
     try {
         const { username, password, confirmation } = req.body;
         const users = await User.getUsers();
@@ -76,6 +76,28 @@ router.post("/join", async (req, res) => {
         res.status(500).json({
             status: "Failed",
             message: error.message
+        });
+    }
+});
+
+router.delete("/user", async (req, res) => {
+    try {
+        const user = await User.getUserByUsename("roka20012");
+        // const id = user._id;
+        const id = "5d935ee838a525459c21207a";
+        res.status(204).json({
+            status: "Success",
+            message: "Delete susfully"
+        });
+        // await User.deleteUser({ _id: id });
+        // res.status(204).json({
+        //     status: "Success",
+        //     message: "Delete susfully"
+        // });
+    } catch (err) {
+        return res.status(500).json({
+            status: "Error",
+            message: err.message
         });
     }
 });
