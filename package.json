@@ -1,0 +1,32 @@
+{
+  "name": "node.js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roka20012/node.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Roka20012/node.js/issues"
+  },
+  "homepage": "https://github.com/Roka20012/node.js#readme",
+  "dependencies": {
+    "config": "^3.2.2",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.1",
+    "nodemon": "^1.19.3"
+  },
+  "devDependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
