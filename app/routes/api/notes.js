@@ -6,17 +6,21 @@ const Note = require("../../database/dao/Note");
 router.delete("/:id", checkToken, async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(req.decoded);
+        const userId = req.decoded.id;
+        const note = await Note.getNoteById(id);
+        if (note.id !== userId) {
+            res.status(401).json({
+                status: "error",
+                message: "Unathorized"
+            });
+        }
         await Note.deleteNote(id);
-
-        console.log("Note got deleted");
 
         return res.status(200).json({
             status: "Succes",
             message: "Note was successfully deleted"
         });
     } catch (err) {
-        console.log("err is", err);
         return res.status(500).json({
             status: "Error",
             data: "error 500"
@@ -27,18 +31,21 @@ router.delete("/:id", checkToken, async (req, res) => {
 router.get("/:id", checkToken, async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(req.decoded);
+        const userId = req.decoded.id;
+        const note = await Note.getNoteById(id);
+        if (note.id !== userId) {
+            res.status(401).json({
+                status: "error",
+                message: "Unathorized"
+            });
+        }
         const note = await Note.getNotesById(id);
-
-        console.log("get note");
-        console.log("note is", note);
 
         res.status(200).json({
             status: "Succes",
             data: note
         });
     } catch (err) {
-        console.log("err is", err);
         res.status(500).json({
             status: "Error",
             data: err.message
@@ -48,18 +55,15 @@ router.get("/:id", checkToken, async (req, res) => {
 
 router.get("/", checkToken, async (req, res) => {
     try {
-        console.log(req.decoded);
-        const notes = await Note.getNotes();
+        let notes = await Note.getNotes();
 
-        console.log("got deleted");
-        console.log("notes is", notes);
+        notes = notes.filter(note => note.userId.toString() === id);
 
         res.status(200).json({
             status: "Succes",
             data: notes
         });
     } catch (err) {
-        console.log("err is", err);
         res.status(500).json({
             status: "Error",
             data: err.message
@@ -70,7 +74,14 @@ router.get("/", checkToken, async (req, res) => {
 router.put("/:id", checkToken, async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(req.decoded);
+        const userId = req.decoded.id;
+        const note = await Note.getNoteById(id);
+        if (note.id !== userId) {
+            res.status(401).json({
+                status: "error",
+                message: "Unathorized"
+            });
+        }
 
         await Note.updatedNote(id, req.body);
 
