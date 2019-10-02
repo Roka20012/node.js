@@ -6,7 +6,7 @@ const User = require("../../database/dao/User");
 
 router.post("/login", async (req, res) => {
     try {
-        const { username, password } = reg.body;
+        const { username, password } = req.body;
         const user = await User.getUserByUsename(username);
 
         if (user) {
@@ -25,25 +25,25 @@ router.post("/login", async (req, res) => {
                 });
             } else {
                 res.status(400).json({
-                    status: "Failed",
-                    message: "Password is incorrect"
+                    status: "error",
+                    message: "Incorrect password"
                 });
             }
         } else {
             res.status(400).json({
-                status: "Failed",
+                status: "error",
                 message: "User not found"
             });
         }
     } catch (error) {
         res.status(500).json({
-            status: "Failed",
+            status: "error",
             message: error.message
         });
     }
 });
 
-router.post("/join", async (req, res) => {
+router.post("/register", async (req, res) => {
     try {
         const { username, password, confirmation } = req.body;
         const users = await User.getUsers();
@@ -62,22 +62,29 @@ router.post("/join", async (req, res) => {
                 });
             } else {
                 res.status(400).json({
-                    status: "Failed",
+                    status: "error",
                     message: "Passwords don't match"
                 });
             }
         } else {
             res.status(400).json({
-                status: "Failed",
+                status: "error",
                 message: "User already exist"
             });
         }
     } catch (error) {
         res.status(500).json({
-            status: "Failed",
+            status: "error",
             message: error.message
         });
     }
 });
 
 module.exports = router;
+
+//token
+/*eyJhbGciOiJIUzI1NiJ9.
+eyJfaWQiOiI1ZDkzMmE2NWI1N2M1MjM0MTBi
+NGMyNDMiLCJ1c2VybmFtZSI6InJva2EyMDAxMiJ9._
+L5kawqhUaSegigm_HPXKXW1RKW52j0EbOlgqx2JSzk
+*/

@@ -10,7 +10,7 @@ module.exports = {
     deleteNote(noteId) {
         return Note.findByIdAndRemove(noteId);
     },
-    addNote(body) {
+    addNote(note) {
         const newNote = new Note(note);
         return newNote.save();
     },
