@@ -1,14 +1,14 @@
 const User = require("../models/User");
 
 module.exports = {
-    getUsers() {
-        return User.find({});
+    getUsers(fields = null) {
+        return User.find({}, fields);
     },
     getUserByUsename(username) {
         return User.findOne({ username });
     },
-    getUserById(userId) {
-        return User.findById(userId);
+    getUserById(userId, fields = null) {
+        return User.findById(userId, fields);
     },
     deleteUser(userId) {
         return User.deleteOne(userId);

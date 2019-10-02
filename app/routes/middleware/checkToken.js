@@ -7,12 +7,13 @@ function checkToken(req, res, next) {
     if (token) {
         if (token.startsWith("Bearer ")) {
             token = token.slice(7, token.length);
+            console.log("token is ", token);
         }
 
         jwt.verify(token, config.get("JWT.secret"), (err, decoded) => {
             if (err) {
                 return res.json({
-                    status: "Failed",
+                    status: "error",
                     message: "Token is not valid"
                 });
             } else {
@@ -22,7 +23,7 @@ function checkToken(req, res, next) {
         });
     } else {
         return res.json({
-            status: "Failed",
+            status: "error",
             message: "Auth token is not supplied"
         });
     }
