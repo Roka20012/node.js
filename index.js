@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const port = process.env.PORT || 5000;
 const mongoConnection = require("./app/database/connection/mongoose");
 
 const log = require("./app/routes/middleware/log");
@@ -24,6 +25,6 @@ app.get("/", (req, res) => {
 
 mongoConnection.then(() => console.log("mongo connected"));
 
-app.listen(3000, () => {
-    console.log("Example app listening on port 3000!");
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}!`);
 });

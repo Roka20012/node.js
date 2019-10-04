@@ -39,7 +39,6 @@ router.get("/:id", checkToken, async (req, res) => {
                 message: "Unathorized"
             });
         }
-        const note = await Note.getNotesById(id);
 
         res.status(200).json({
             status: "Succes",
@@ -55,9 +54,11 @@ router.get("/:id", checkToken, async (req, res) => {
 
 router.get("/", checkToken, async (req, res) => {
     try {
+        const id = req.decoded._id;//userId
         let notes = await Note.getNotes();
-
-        notes = notes.filter(note => note.userId.toString() === id);
+        console.log("id is", id);
+        console.log("notes is", notes);
+        notes = notes.filter(note => note.userId+"" === id);
 
         res.status(200).json({
             status: "Succes",
