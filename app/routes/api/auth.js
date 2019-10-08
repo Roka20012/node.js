@@ -19,10 +19,7 @@ router.post("/login", async (req, res) => {
                     }),
                     config.get("JWT.secret")
                 );
-                res.status(200).json({
-                    status: "Success",
-                    token
-                });
+                res.status(200).json(token);
             } else {
                 res.status(400).json({
                     status: "error",
@@ -56,10 +53,7 @@ router.post("/register", async (req, res) => {
                     username,
                     password: encrypted
                 });
-                res.status(201).json({
-                    status: "Success",
-                    data: newUser
-                });
+                res.status(201).json(newUser);
             } else {
                 res.status(400).json({
                     status: "error",
@@ -80,33 +74,5 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.delete("/user", async (req, res) => {
-    try {
-        const user = await User.getUserByUsename("roka20012");
-        // const id = user._id;
-        const id = "5d935ee838a525459c21207a";
-        res.status(204).json({
-            status: "Success",
-            message: "Delete susfully"
-        });
-        // await User.deleteUser({ _id: id });
-        // res.status(204).json({
-        //     status: "Success",
-        //     message: "Delete susfully"
-        // });
-    } catch (err) {
-        return res.status(500).json({
-            status: "Error",
-            message: err.message
-        });
-    }
-});
-
 module.exports = router;
 
-//token
-/*eyJhbGciOiJIUzI1NiJ9.
-eyJfaWQiOiI1ZDkzMmE2NWI1N2M1MjM0MTBi
-NGMyNDMiLCJ1c2VybmFtZSI6InJva2EyMDAxMiJ9._
-L5kawqhUaSegigm_HPXKXW1RKW52j0EbOlgqx2JSzk
-*/

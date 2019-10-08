@@ -27,10 +27,7 @@ router.get("/:id", checkToken, async (req, res) => {
         console.log(req.decoded);
         const user = await User.getUserById(id, "_id username");
 
-        res.status(200).json({
-            status: "Succes",
-            data: user
-        });
+        res.status(200).json(user);
     } catch (err) {
         res.status(500).json({
             status: "Error",
@@ -44,10 +41,7 @@ router.get("/", checkToken, async (req, res) => {
         console.log(req.decoded);
         const users = await User.getUsers("_id username");
 
-        res.status(200).json({
-            status: "Succes",
-            data: users
-        });
+        res.status(200).json(users);
     } catch (err) {
         res.status(500).json({
             status: "Error",
@@ -73,7 +67,5 @@ router.put("/:id", checkToken, async (req, res) => {
         });
     }
 });
-
-
 
 module.exports = router;

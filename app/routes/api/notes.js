@@ -40,10 +40,7 @@ router.get("/:id", checkToken, async (req, res) => {
             });
         }
 
-        res.status(200).json({
-            status: "Succes",
-            data: note
-        });
+        res.status(200).json(note);
     } catch (err) {
         res.status(500).json({
             status: "Error",
@@ -54,16 +51,14 @@ router.get("/:id", checkToken, async (req, res) => {
 
 router.get("/", checkToken, async (req, res) => {
     try {
-        const id = req.decoded._id;//userId
+        const id = req.decoded._id; //userId
         let notes = await Note.getNotes();
         console.log("id is", id);
         console.log("notes is", notes);
-        notes = notes.filter(note => note.userId+"" === id);
+        console.log("req.header is", req.headers);
+        notes = notes.filter(note => note.userId + "" === id);
 
-        res.status(200).json({
-            status: "Succes",
-            data: notes
-        });
+        res.status(200).json(notes);
     } catch (err) {
         res.status(500).json({
             status: "Error",
@@ -111,16 +106,10 @@ router.post("/", checkToken, async (req, res) => {
                 });
             }
             const note = await Note.addNote(req.body);
-            res.status(201).json({
-                status: "Success",
-                data: note
-            });
+            res.status(201).json(note);
         } else {
             const note = await Note.addNote({ ...req.body, userId: id });
-            res.status(201).json({
-                status: "Success",
-                data: note
-            });
+            res.status(201).json(note);
         }
     } catch (error) {
         res.status(400).json({
