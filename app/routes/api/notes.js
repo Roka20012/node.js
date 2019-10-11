@@ -6,9 +6,15 @@ const Note = require("../../database/dao/Note");
 router.delete("/:id", checkToken, async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.decoded.id;
-        const note = await Note.getNoteById(id);
-        if (note.id !== userId) {
+        const userId = req.decoded._id;
+        const note = await Note.getNotesById(id);
+        if (!note) {
+            res.status(400).json({
+                status: "error",
+                message: "Don't have this note"
+            });
+        }
+        if (note.userId != userId) {
             res.status(401).json({
                 status: "error",
                 message: "Unathorized"
@@ -31,7 +37,7 @@ router.delete("/:id", checkToken, async (req, res) => {
 router.get("/:id", checkToken, async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.decoded.id;
+        const userId = req.decoded._id;
         const note = await Note.getNoteById(id);
         if (note.id !== userId) {
             res.status(401).json({
@@ -70,9 +76,15 @@ router.get("/", checkToken, async (req, res) => {
 router.put("/:id", checkToken, async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.decoded.id;
-        const note = await Note.getNoteById(id);
-        if (note.id !== userId) {
+        const userId = req.decoded._id;
+        const note = await Note.getNotesById(id);
+        if (!note) {
+            res.status(400).json({
+                status: "error",
+                message: "Don't have this note"
+            });
+        }
+        if (note.userId != userId) {
             res.status(401).json({
                 status: "error",
                 message: "Unathorized"
