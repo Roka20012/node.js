@@ -2,12 +2,12 @@ const router = require("express").Router();
 
 const checkToken = require("../middleware/checkToken");
 const User = require("../../database/dao/User");
+const Note = require("../../database/dao/Note");
 
-router.delete("/:id", checkToken, async (req, res) => {
+router.delete("/user", checkToken, async (req, res) => {
     try {
-        const { id } = req.params;
-        console.log(req.decoded);
-        await User.deleteUser(id);
+        const userId = req.decoded._id;
+        await User.deleteUser(userId);
 
         return res.status(200).json({
             status: "Succes",
@@ -16,16 +16,15 @@ router.delete("/:id", checkToken, async (req, res) => {
     } catch (err) {
         return res.status(500).json({
             status: "Error",
-            data: "error 500"
+            data: err.message
         });
     }
 });
 
-router.get("/:id", checkToken, async (req, res) => {
+router.get("/user", checkToken, async (req, res) => {
     try {
-        const { id } = req.params;
-        console.log(req.decoded);
-        const user = await User.getUserById(id, "_id username");
+        const userId = req.decoded._id;
+        const user = await User.getUserById(userId, "_id username");
 
         res.status(200).json(user);
     } catch (err) {
@@ -38,10 +37,19 @@ router.get("/:id", checkToken, async (req, res) => {
 
 router.get("/", checkToken, async (req, res) => {
     try {
-        console.log(req.decoded);
         const users = await User.getUsers("_id username");
+        const notes = await Note.getNotes();
+        const notesStr = notes.toString();
+        const newUsers = users.map(({ username, _id }) => {
+            const notes = notesStr.match(new RegExp(_id, "g")) || [];
+            return {
+                username,
+                _id,
+                notes: notes.length
+            };
+        });
 
-        res.status(200).json(users);
+        res.status(200).json(newUsers);
     } catch (err) {
         res.status(500).json({
             status: "Error",
@@ -50,11 +58,11 @@ router.get("/", checkToken, async (req, res) => {
     }
 });
 
-router.put("/:id", checkToken, async (req, res) => {
+router.put("/user", checkToken, async (req, res) => {
     try {
-        const { id } = req.params;
+        const userId = req.decoded._id;
 
-        await User.updateUser(id, req.body);
+        await User.updateUser(userId, req.body);
 
         res.status(200).json({
             status: "Succes",

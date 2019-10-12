@@ -59,9 +59,7 @@ router.get("/", checkToken, async (req, res) => {
     try {
         const id = req.decoded._id; //userId
         let notes = await Note.getNotes();
-        console.log("id is", id);
-        console.log("notes is", notes);
-        console.log("req.header is", req.headers);
+
         notes = notes.filter(note => note.userId + "" === id);
 
         res.status(200).json(notes);

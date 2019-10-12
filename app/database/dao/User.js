@@ -11,7 +11,7 @@ module.exports = {
         return User.findById(userId, fields);
     },
     deleteUser(userId) {
-        return User.deleteOne(userId);
+        return User.findOneAndDelete({ _id: userId });
     },
     addUser(user) {
         const newUser = new User(user);
